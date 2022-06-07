@@ -20,6 +20,36 @@ variables:
   vmImageName: 'ubuntu-latest'
 
 stages:
+- stage: Analyze and Test
+  displayName: Run SonarQube and test
+  jobs:
+  - job: Analyze
+    displayName: Analyze
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    
+    - task: SonarQubePrepare@5
+      inputs:
+        SonarQube: 'SonarQUbe'
+        scannerMode: 'Other'
+
+    - task: Maven@3
+      inputs:
+        mavenPomFile: 'pom.xml'
+        goals: 'clean package'
+        publishJUnitResults: true
+        testResultsFiles: '**/surefire-reports/TEST-*.xml'
+        javaHomeOption: 'JDKVersion'
+        mavenVersionOption: 'Default'
+        mavenAuthenticateFeed: false
+        effectivePomSkip: false
+        sonarQubeRunAnalysis: true
+        sqMavenPluginVersionChoice: 'latest'
+    - task: SonarQubePublish@5
+      inputs:
+        pollingTimeoutSec: '300'
+        
 - stage: Build
   displayName: Build and push stage
   jobs:
