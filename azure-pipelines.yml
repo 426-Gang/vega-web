@@ -33,7 +33,11 @@ stages:
       inputs:
         SonarQube: 'SonarQUbe'
         scannerMode: 'CLI'
-        configMode: 'file'
+        configMode: 'manual'
+        cliProjectKey: '426-Gang_vega-web_AYFABbEydRFwdp6VMoPJ'
+        cliProjectName: 'vega-web'
+        cliSources: '.'
+
     - task: SonarQubeAnalyze@5
     - task: SonarQubePublish@5
       inputs:
