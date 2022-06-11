@@ -20,6 +20,15 @@ To start the application, run below command in the terminal.
 
 This will deploy the application at port 8000. The same configuration you can find in the file named "index.js" under the server folder. All the depedecies are declared in the package.json file. 
 
+## Running Vega-Web with Docker
+
+To run the vega-web with docker (frontend and server) run the following commands:
+```
+$ export API_URL="[Your Network's IP]:8080"
+$ docker-compose up
+```
+The API_URL environment variable must be set for docker to function.
+
 ## Type of users (for login) 
 - Public (can see only the public site)
 - Registered users (user can register account and use scaled down pla.orm service)
