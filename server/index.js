@@ -14,6 +14,8 @@ const env = config();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json({limit: '50mb'}));
 
+console.log("Expecting frontend to be hosted at: http://" + process.env.FRONTEND_URL);
+
 if (process.env.NODE_ENV === 'development') {
   var corsOptions = {
     //origin: 'http://localhost:3000',
