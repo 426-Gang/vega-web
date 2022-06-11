@@ -43,10 +43,10 @@ stages:
       inputs:
         pollingTimeoutSec: '300'
         
-- stage: Build and push images to container repository
+- stage: BuildAndPush
   displayName: Build and push images to container repository
   jobs:
-  - job: Build and push
+  - job: BuildandPush
     displayName: Build
     pool:
       vmImage: $(vmImageName)
