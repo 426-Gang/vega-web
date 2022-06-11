@@ -20,8 +20,8 @@ variables:
   vmImageName: 'ubuntu-latest'
 
 stages:
-- stage: Analyze_Test
-  displayName: Run SonarQube and test
+- stage: Analyze
+  displayName: Run SonarQube
   jobs:
   - job: Analyze
     displayName: Analyze
@@ -42,6 +42,25 @@ stages:
     - task: SonarQubePublish@5
       inputs:
         pollingTimeoutSec: '300'
+
+- stage: Unit_Test
+  displayName: Run unit tests
+  jobs:
+  - job: Test
+    displayName: Test
+    pool:
+      vmImage: $(vmImageName)
+    
+    steps:
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '10.x'
+      displayName: 'Install Node.js'
+
+    - script: |
+        npm install
+        npm test -- --watchAll=false
+      displayName: 'Run unit tests'
         
 - stage: BuildAndPush
   displayName: Build and push images to container repository
