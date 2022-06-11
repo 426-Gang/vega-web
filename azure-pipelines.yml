@@ -52,16 +52,25 @@ stages:
       vmImage: $(vmImageName)
     steps:
     - task: Docker@2
-      displayName: Build and push an image to container registry
+      displayName: Build
       inputs:
-        command: buildAndPush
+        command: build
         repository: vegaweb
         dockerfile: $(dockerfilePath)
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
           $(tag)
           latest 
-        arguments: "--build-arg WEBSERVER_URL='vega-webserver.azurewebsites.net'"
+        arguments: --build-arg WEBSERVER_URL='vega-webserver.azurewebsites.net'
+    - task: Docker@2
+      displayName: push image to container registry
+      inputs:
+        command: push
+        repository: vegaweb
+        containerRegistry: $(dockerRegistryServiceConnection)
+        tags: |
+          $(tag)
+          latest 
 
     - task: Docker@2
       displayName: Build and push an image to container registry
