@@ -3,101 +3,100 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
 
 trigger:
-- master
+  - master
 
 resources:
-- repo: self
+  - repo: self
 
 variables:
   # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: '472cf612-11e8-46f7-90d6-d073311cd56e'
-  containerRegistry: 'vegaabsolute.azurecr.io'
-  dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
-  dockerfilePathServer: '$(Build.SourcesDirectory)/server/Dockerfile'
-  tag: '$(Build.BuildId)'
+  dockerRegistryServiceConnection: "472cf612-11e8-46f7-90d6-d073311cd56e"
+  containerRegistry: "vegaabsolute.azurecr.io"
+  dockerfilePath: "$(Build.SourcesDirectory)/Dockerfile"
+  dockerfilePathServer: "$(Build.SourcesDirectory)/server/Dockerfile"
+  tag: "$(Build.BuildId)"
 
   # Agent VM image name
-  vmImageName: 'ubuntu-latest'
+  vmImageName: "ubuntu-latest"
 
 stages:
-- stage: Analyze
-  displayName: Run SonarQube
-  jobs:
-  - job: Analyze
-    displayName: Analyze
-    pool:
-      vmImage: $(vmImageName)
-    steps:
-    
-    - task: SonarQubePrepare@5
-      inputs:
-        SonarQube: 'SonarQUbe'
-        scannerMode: 'CLI'
-        configMode: 'manual'
-        cliProjectKey: '426-Gang_vega-web_AYFABbEydRFwdp6VMoPJ'
-        cliProjectName: 'vega-web'
-        cliSources: '.'
+  - stage: Analyze
+    displayName: Run SonarQube
+    jobs:
+      - job: Analyze
+        displayName: Analyze
+        pool:
+          vmImage: $(vmImageName)
+        steps:
+          - task: SonarQubePrepare@5
+            inputs:
+              SonarQube: "SonarQUbe"
+              scannerMode: "CLI"
+              configMode: "manual"
+              cliProjectKey: "426-Gang_vega-web_AYFABbEydRFwdp6VMoPJ"
+              cliProjectName: "vega-web"
+              cliSources: "."
 
-    - task: SonarQubeAnalyze@5
-    - task: SonarQubePublish@5
-      inputs:
-        pollingTimeoutSec: '300'
+          - task: SonarQubeAnalyze@5
+          - task: SonarQubePublish@5
+            inputs:
+              pollingTimeoutSec: "300"
 
-- stage: Unit_Test
-  displayName: Run unit tests
-  jobs:
-  - job: Test
-    displayName: Test
-    pool:
-      vmImage: $(vmImageName)
-    
-    steps:
-    - task: NodeTool@0
-      inputs:
-        versionSpec: '10.x'
-      displayName: 'Install Node.js'
+  - stage: Unit_Test
+    displayName: Run unit tests
+    jobs:
+      - job: Test
+        displayName: Test
+        pool:
+          vmImage: $(vmImageName)
 
-    - script: |
-        npm install
-        npm test -- --watchAll=false
-      displayName: 'Run unit tests'
-        
-- stage: BuildAndPush
-  displayName: Build and push images to container repository
-  jobs:
-  - job: BuildandPush
-    displayName: Build
-    pool:
-      vmImage: $(vmImageName)
-    steps:
-    - task: Docker@2
-      displayName: Build
-      inputs:
-        command: build
-        repository: vegaweb
-        dockerfile: $(dockerfilePath)
-        containerRegistry: $(dockerRegistryServiceConnection)
-        tags: |
-          $(tag)
-          latest 
-        arguments: --build-arg WEBSERVER_URL=vega-webserver.azurewebsites.net
-    - task: Docker@2
-      displayName: push image to container registry
-      inputs:
-        command: push
-        repository: vegaweb
-        containerRegistry: $(dockerRegistryServiceConnection)
-        tags: |
-          $(tag)
-          latest 
+        steps:
+          - task: NodeTool@0
+            inputs:
+              versionSpec: "10.x"
+            displayName: "Install Node.js"
 
-    - task: Docker@2
-      displayName: Build and push an image to container registry
-      inputs:
-        command: buildAndPush
-        repository: vegawebserver
-        dockerfile: $(dockerfilePathServer)
-        containerRegistry: $(dockerRegistryServiceConnection)
-        tags: |
-          $(tag)
-          latest
+          - script: |
+              npm install
+              npm test -- --watchAll=false
+            displayName: "Run unit tests"
+
+  - stage: BuildAndPush
+    displayName: Build and push images to container repository
+    jobs:
+      - job: BuildandPush
+        displayName: Build
+        pool:
+          vmImage: $(vmImageName)
+        steps:
+          - task: Docker@2
+            displayName: Build
+            inputs:
+              command: build
+              repository: vegaweb
+              dockerfile: $(dockerfilePath)
+              containerRegistry: $(dockerRegistryServiceConnection)
+              tags: |
+                $(tag)
+                latest
+              arguments: --build-arg WEBSERVER_URL=vega-webserver.azurewebsites.net
+          - task: Docker@2
+            displayName: push image to container registry
+            inputs:
+              command: push
+              repository: vegaweb
+              containerRegistry: $(dockerRegistryServiceConnection)
+              tags: |
+                $(tag)
+                latest
+
+          - task: Docker@2
+            displayName: Build and push an image to container registry
+            inputs:
+              command: buildAndPush
+              repository: vegawebserver
+              dockerfile: $(dockerfilePathServer)
+              containerRegistry: $(dockerRegistryServiceConnection)
+              tags: |
+                $(tag)
+                latest
