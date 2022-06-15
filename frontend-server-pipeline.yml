@@ -44,6 +44,7 @@ stages:
         pollingTimeoutSec: '300'
 
 - stage: Unit_Test
+  condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/master'))
   displayName: Run unit tests
   jobs:
   - job: Test
