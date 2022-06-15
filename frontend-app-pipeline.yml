@@ -90,14 +90,3 @@ stages:
         tags: |
           $(tag)
           latest 
-
-    - task: Docker@2
-      displayName: Build and push an image to container registry
-      inputs:
-        command: buildAndPush
-        repository: vegawebserver
-        dockerfile: $(dockerfilePathServer)
-        containerRegistry: $(dockerRegistryServiceConnection)
-        tags: |
-          $(tag)
-          latest
