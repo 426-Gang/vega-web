@@ -13,7 +13,6 @@ variables:
   dockerRegistryServiceConnection: '472cf612-11e8-46f7-90d6-d073311cd56e'
   containerRegistry: 'vegaabsolute.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
-  dockerfilePathServer: '$(Build.SourcesDirectory)/server/Dockerfile'
   tag: '$(Build.BuildId)'
 
   # Agent VM image name
