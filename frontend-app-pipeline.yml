@@ -21,6 +21,7 @@ variables:
 
 stages:
 - stage: Analyze
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
   displayName: Run SonarQube
   jobs:
   - job: Analyze
@@ -44,6 +45,7 @@ stages:
         pollingTimeoutSec: '300'
 
 - stage: Unit_Test
+  condition: ne(variables['Build.SourceBranch'], 'refs/heads/master')
   displayName: Run unit tests
   jobs:
   - job: Test
