@@ -9,11 +9,14 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - API_URL=${API_URL}
+      - BACKEND_URL=127.0.0.1:8080
+      - FRONTEND_URL=localhost:3000
   frontend:
     build:
       context: ./
       dockerfile: ./Dockerfile
+      args:
+        - WEBSERVER_URL=localhost:8000
     image: "venus/theswitch"
     ports:
       - "3000:3000"
