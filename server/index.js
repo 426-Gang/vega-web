@@ -8,22 +8,18 @@ import bodyParser from 'body-parser';
 
 const app = express();
 const port = 8000;
-const env = config();
+config();
 
 //app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json({limit: '50mb'}));
 
-console.log("Expecting frontend to be hosted at: http://" + process.env.FRONTEND_URL);
 
-if (process.env.NODE_ENV === 'development') {
-  var corsOptions = {
-    //origin: 'http://localhost:3000',
+var corsOptions = {
     origin: `http://${process.env.FRONTEND_URL}`,
     optionsSuccessStatus: 200
-  };
-  app.use(cors(corsOptions));
-}
+};
+app.use(cors(corsOptions));
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
@@ -35,6 +31,7 @@ app.use("/api/venus", fileUploader)
 app.use("/api/venus/admin", adminPanel)
 
 app.listen(port, () => {
-  console.log(process.env.API_URL);
+  console.log('Expecting frontend to be hosted at: http://' + process.env.FRONTEND_URL);
+  console.log('Will try to contact the backend at: http://' +  process.env.API_URL);
   console.log(`Example app listening on port ${port}!`)
 });
