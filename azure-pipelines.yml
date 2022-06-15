@@ -81,15 +81,6 @@ stages:
           $(tag)
           latest 
         arguments: --build-arg WEBSERVER_URL=vega-webserver.azurewebsites.net
-    - task: Docker@2
-      displayName: push image to container registry
-      inputs:
-        command: push
-        repository: vegaweb
-        containerRegistry: $(dockerRegistryServiceConnection)
-        tags: |
-          $(tag)
-          latest 
 
     - task: Docker@2
       displayName: Build and push an image to container registry
