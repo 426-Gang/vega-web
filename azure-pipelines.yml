@@ -64,6 +64,7 @@ stages:
       displayName: 'Run unit tests'
         
 - stage: BuildAndPush
+  condition: or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq(variables['Build.SourceBranch'], 'refs/heads/dev'))
   displayName: Build and push images to container repository
   jobs:
   - job: BuildandPush
