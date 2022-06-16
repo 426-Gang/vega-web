@@ -101,7 +101,7 @@ stages:
       condition: eq(variables['Build.SourceBranchName'], 'dev')
       displayName: 'Deploy Dev Frontend'
       inputs:
-        azureSubscription: 'Azure for Students (8550eca4-7c10-481d-9711-92390ef2a14a)'
+        azureSubscription: 'Azure for Students (63ecfa31-9ab6-4ab7-8c8d-dd55767d7a40)'
         appType: webAppContainer
         WebAppName: 'vega-web-dev'
         DockerNamespace: vegadevregistry.azurecr.io
