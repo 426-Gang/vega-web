@@ -97,3 +97,13 @@ stages:
         tags: |
           $(tag)
           latest
+    - task: AzureRmWebAppDeployment@4
+      condition: if(eq(variables['Build.SourceBranchName'], 'dev'))
+      displayName: 'Deploy Dev Frontend'
+      inputs:
+        azureSubscription: 'Azure for Students (8550eca4-7c10-481d-9711-92390ef2a14a)'
+        appType: webAppContainer
+        WebAppName: 'vega-web-dev'
+        DockerNamespace: vegadevregistry.azurecr.io
+        DockerRepository: vegaweb
+        DockerImageTag: latest
