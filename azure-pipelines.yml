@@ -10,10 +10,15 @@ resources:
 
 variables:
   # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: '472cf612-11e8-46f7-90d6-d073311cd56e'
-  containerRegistry: 'vegaabsolute.azurecr.io'
+  ${{ if eq(variables['Build.SourceBranchName'], 'master') }}: 
+    dockerRegistryServiceConnection: '472cf612-11e8-46f7-90d6-d073311cd56e'
+    containerRegistry: 'vegaabsolute.azurecr.io'
+  ${{ if eq(variables['Build.SourceBranchName'], 'dev') }}: 
+    dockerRegistryServiceConnection: '5043ee8c-6dea-4efd-b1cd-d24fa26fdc3c'
+    containerRegistry: 'vegadevregistry.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
   tag: '$(Build.BuildId)'
+
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
@@ -92,3 +97,13 @@ stages:
         tags: |
           $(tag)
           latest 
+    - task: AzureRmWebAppDeployment@4
+      condition: if(eq(variables['Build.SourceBranchName'], 'dev'))
+      displayName: 'Deploy Dev Frontend'
+      inputs:
+        azureSubscription: 'Azure for Students (8550eca4-7c10-481d-9711-92390ef2a14a)'
+        appType: webAppContainer
+        WebAppName: 'vega-web'
+        DockerNamespace: vegadevregistry.azurecr.io
+        DockerRepository: vegaweb
+        DockerImageTag: latest
