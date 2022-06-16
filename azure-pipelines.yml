@@ -98,7 +98,7 @@ stages:
           $(tag)
           latest
     - task: AzureRmWebAppDeployment@4
-      condition: if(eq(variables['Build.SourceBranchName'], 'dev'))
+      condition: eq(variables['Build.SourceBranchName'], 'dev')
       displayName: 'Deploy Dev Frontend'
       inputs:
         azureSubscription: 'Azure for Students (8550eca4-7c10-481d-9711-92390ef2a14a)'
