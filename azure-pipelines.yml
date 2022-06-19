@@ -81,13 +81,14 @@ stages:
     - task: Docker@2
       displayName: Build
       inputs:
-        command: build
-        repository: vegaweb
-        dockerfile: $(dockerfilePath)
-        containerRegistry: $(dockerRegistryServiceConnection)
+        containerRegistry: '$(dockerRegistryServiceConnection)'
+        repository: 'vegaweb'
+        command: 'build'
+        Dockerfile: '**/Dockerfile'
         tags: |
           $(tag)
-          latest 
+          latest
+        arguments: '--build-arg REACT_APP_WEBSERVER_URL=vega-webserver-dev.azurewebsites.net'
         
     - task: Docker@2
       displayName: push image to container registry
@@ -108,4 +109,3 @@ stages:
         DockerNamespace: vegadevregistry.azurecr.io
         DockerRepository: vegaweb
         DockerImageTag: latest
-        AppSettings: '-REACT_APP_WEBSERVER_URL vega-webserver-dev.azurewebsites.net'
