@@ -5,6 +5,7 @@
 trigger:
 - master
 - dev
+- fix_*
 
 resources:
 - repo: self
