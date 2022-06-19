@@ -109,7 +109,7 @@ stages:
       vmImage: $(vmImageName)
     steps:
     - task: AzureRmWebAppDeployment@4
-      condition: neq(variables['Build.SourceBranchName'], 'master')
+      #condition: eq(variables['Build.SourceBranchName'], 'dev')
       displayName: 'Deploy Dev Frontend'
       inputs:
         azureSubscription: 'Azure for Students (63ecfa31-9ab6-4ab7-8c8d-dd55767d7a40)'
