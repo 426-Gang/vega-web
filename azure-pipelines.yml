@@ -5,7 +5,6 @@
 trigger:
 - master
 - dev
-- fix_*
 
 resources:
 - repo: self
@@ -71,7 +70,7 @@ stages:
       displayName: 'Run unit tests'
         
 - stage: BuildAndPush
-  condition: or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq(variables['Build.SourceBranch'], 'refs/heads/dev'))
+  #condition: or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq(variables['Build.SourceBranch'], 'refs/heads/dev'))
   displayName: Build and push images to container repository
   jobs:
   - job: BuildandPush
@@ -100,8 +99,17 @@ stages:
         tags: |
           $(tag)
           latest
+
+- stage: DeployDev
+  displayName: Deploy to dev environment
+  jobs:
+  - job: Deploy
+    displayName: Deploy to dev environment
+    pool:
+      vmImage: $(vmImageName)
+    steps:
     - task: AzureRmWebAppDeployment@4
-      condition: eq(variables['Build.SourceBranchName'], 'dev')
+      condition: neq(variables['Build.SourceBranchName'], 'master')
       displayName: 'Deploy Dev Frontend'
       inputs:
         azureSubscription: 'Azure for Students (63ecfa31-9ab6-4ab7-8c8d-dd55767d7a40)'
