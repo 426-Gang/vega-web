@@ -99,10 +99,6 @@ stages:
         tags: |
           $(tag)
           latest
-
-- stage: DeployDev
-  displayName: Deploy to dev environment
-  jobs:
   - job: Deploy
     displayName: Deploy to dev environment
     pool:
