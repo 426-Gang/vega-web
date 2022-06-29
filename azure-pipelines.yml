@@ -108,4 +108,4 @@ stages:
         DockerNamespace: vegadevregistry.azurecr.io
         DockerRepository: vegaweb
         DockerImageTag: latest
-        AppSettings: '-REACT_APP_WEBSERVER_URL https://vega-webserver-dev.azurewebsites.net/'
+        AppSettings: '-REACT_APP_WEBSERVER_URL vega-webserver-dev.azurewebsites.net'
