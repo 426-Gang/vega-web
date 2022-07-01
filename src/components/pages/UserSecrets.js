@@ -10,10 +10,12 @@ import {toContainHTML} from "@testing-library/jest-dom/dist/matchers";
 const SecretsPanel = (props) => {
     const {user} = useContext(UserContext);
     const [listOfUsers, setUsers] = useState([]);
+    const [testListOfSecrets, setSecrets] = useState([]);
     useEffect(() => {
         console.log("Inside useEffect")
         fetchuser(user.jwt)
             .then(resp => {
+                // Set initial value of secerets here  
                 setUsers(resp)
             });
 
@@ -31,14 +33,37 @@ const SecretsPanel = (props) => {
     const changeRole = (evt, secret) => {
         secret.password = "test"
     }
-    let testListOfSecrets = [{name:"Netflix",date:"June 22d 2021",password:"supersecurepassword"}]
+
+
     const listOfUsersHTML = () => {
         if(testListOfSecrets.length){
-            return testListOfSecrets.map((secret) => <tr><td contenteditable="true">{secret.name}</td><td >{secret.date}</td><td contenteditable="true">{secret.password}</td></tr>)
+            return testListOfSecrets.map((secret) => <tr><td contenteditable="true">{secret.name}</td><td >{secret.date}</td><td contenteditable="true">{secret.password}</td>
+                <td><button className="btn btn-danger mx-1 my-1" onClick={() => deleteRow(secret.name)}>Delete</button></td></tr>)
         }
     }
 
+    const deleteRow = (secret) =>
+    {
+        let newListOfSecrets = []
+        for (let i = 0; i < testListOfSecrets.length; i++)
+        {
+            if(testListOfSecrets[i]['name'] == secret)
+            {
+                alert(testListOfSecrets[i]['name']);
+                alert(secret);
+                alert(i)
 
+
+            }else
+            {
+                newListOfSecrets.push(testListOfSecrets[i]);
+
+            }
+
+        }
+        setSecrets(newListOfSecrets)
+        
+    }
 
     const [show, setShow] = useState(false);
     const [validated, setValidated] = useState(false);
@@ -70,12 +95,12 @@ const SecretsPanel = (props) => {
                 event.preventDefault();
                 event.stopPropagation();
                 setShow(false)
-                let newDate = getCurrentDate(" ")
+                let newDate = getCurrentDate("-")
                 testListOfSecrets.push({name:newName,date:newDate,password:newPassword})
+                setSecrets(testListOfSecrets)
 
                 setNewName("")
                 setNewPassword("")
-
             }
             setValidated(true);
         }
@@ -88,8 +113,7 @@ const SecretsPanel = (props) => {
                     <td>Name</td>
                     <td>Creation Date</td>
                     <td>Password</td>
-                    <td></td>
-                    <td></td>
+                    <td>Delete</td>
                 </tr>
                 </thead>
                 <tbody id="secretTableBody">
