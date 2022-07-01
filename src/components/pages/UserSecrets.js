@@ -49,11 +49,7 @@ const SecretsPanel = (props) => {
         {
             if(testListOfSecrets[i]['name'] == secret)
             {
-                alert(testListOfSecrets[i]['name']);
-                alert(secret);
-                alert(i)
-
-
+                
             }else
             {
                 newListOfSecrets.push(testListOfSecrets[i]);
@@ -62,7 +58,7 @@ const SecretsPanel = (props) => {
 
         }
         setSecrets(newListOfSecrets)
-        
+
     }
 
     const [show, setShow] = useState(false);
