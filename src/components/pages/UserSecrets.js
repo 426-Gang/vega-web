@@ -34,7 +34,7 @@ const SecretsPanel = (props) => {
     let testListOfSecrets = [{name:"Netflix",date:"June 22d 2021",password:"supersecurepassword"}]
     const listOfUsersHTML = () => {
         if(testListOfSecrets.length){
-            return testListOfSecrets.map((secret) => <tr><td>{secret.name}</td><td>{secret.date}</td><td>{secret.password}</td></tr>)
+            return testListOfSecrets.map((secret) => <tr><td contenteditable="true">{secret.name}</td><td >{secret.date}</td><td contenteditable="true">{secret.password}</td></tr>)
         }
     }
 
