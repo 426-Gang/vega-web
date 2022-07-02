@@ -2,7 +2,6 @@ import SimplePageLayout from '../templates/SimplePageLayout.js';
 import {fetchuser, enableAccount, changeAccountRole} from  '../../service/AdminPanel/AdminPanel.js';
 import {UserContext} from '../../auth/UserProvider.js';
 import {useState, useContext, useEffect} from 'react';
-
 import {newSecret,mySecrets,updateSecret,deleteSecret} from '../../service/Secrets/UserSecrets.js';
 import {Form, Button, Row, Col, Table, Modal} from 'react-bootstrap';
 import {toContainHTML} from "@testing-library/jest-dom/dist/matchers";
@@ -10,13 +9,17 @@ import {toContainHTML} from "@testing-library/jest-dom/dist/matchers";
 const SecretsPanel = (props) => {
     const {user} = useContext(UserContext);
     const [listOfUsers, setUsers] = useState([]);
-    const [testListOfSecrets, setSecrets] = useState([]);
+    const [testListOfSecrets, setSecrets,setListOfSecrets] = useState([]);
     useEffect(() => {
         console.log("Inside useEffect")
         fetchuser(user.jwt)
             .then(resp => {
                 // Set initial value of secerets here  
                 setUsers(resp)
+            });
+            mySecrets(user.username).then(resp => {
+                setSecrets(resp)
+                console.log(setSecrets)    
             });
 
 
@@ -36,18 +39,22 @@ const SecretsPanel = (props) => {
 
 
     const listOfUsersHTML = () => {
+        
         if(testListOfSecrets.length){
-            return testListOfSecrets.map((secret) => <tr><td contenteditable="true">{secret.name}</td><td >{secret.date}</td><td contenteditable="true">{secret.password}</td>
-                <td><button className="btn btn-danger mx-1 my-1" onClick={() => deleteRow(secret.name)}>Delete</button></td></tr>)
+            return testListOfSecrets.map((secret) =>
+             <tr><td contenteditable="true">{secret.id}</td><td >{secret.datetime}</td><td contenteditable="true">{secret.data}</td>
+                <td><button className="btn btn-danger mx-1 my-1" onClick={() => deleteRow(secret.id)}>Delete</button></td></tr>)
         }
+            
     }
 
     const deleteRow = (secret) =>
     {
+        // deleteSecret(secret)
         let newListOfSecrets = []
         for (let i = 0; i < testListOfSecrets.length; i++)
         {
-            if(testListOfSecrets[i]['name'] == secret)
+            if(testListOfSecrets[i]['id'] == secret)
             {
                 
             }else
@@ -92,6 +99,7 @@ const SecretsPanel = (props) => {
                 event.stopPropagation();
                 setShow(false)
                 let newDate = getCurrentDate("-")
+                newSecret(user.username,newPassword,false)
                 testListOfSecrets.push({name:newName,date:newDate,password:newPassword})
                 setSecrets(testListOfSecrets)
 
@@ -106,7 +114,7 @@ const SecretsPanel = (props) => {
             <Table id="secretTable">
                 <thead>
                 <tr>
-                    <td>Name</td>
+                    <td>Id</td>
                     <td>Creation Date</td>
                     <td>Password</td>
                     <td>Delete</td>
@@ -125,10 +133,10 @@ const SecretsPanel = (props) => {
                     <Modal.Title>Create a New Secret</Modal.Title>
                 </Modal.Header>
                 <Modal.Body><Form  noValidate validated={validated} onSubmit={handleSubmit}>
-                    <Form.Group className="mb-3" controlId="formBasicName">
+                    {/* <Form.Group className="mb-3" controlId="formBasicName">
                         <Form.Label>Name</Form.Label>
                         <Form.Control value={newName} onChange={(e) => setNewName(e.target.value)} required type="text" placeholder="Enter Name" />
-                    </Form.Group>
+                    </Form.Group> */}
 
                     <Form.Group className="mb-3" controlId="formBasicPassword">
                         <Form.Label>Password</Form.Label>
