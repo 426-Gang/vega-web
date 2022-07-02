@@ -3,7 +3,7 @@ import {fetchuser, enableAccount, changeAccountRole} from  '../../service/AdminP
 import {UserContext} from '../../auth/UserProvider.js';
 import {useState, useContext, useEffect} from 'react';
 
-
+import {newSecret,mySecrets,updateSecret,deleteSecret} from '../../service/Secrets/UserSecrets.js';
 import {Form, Button, Row, Col, Table, Modal} from 'react-bootstrap';
 import {toContainHTML} from "@testing-library/jest-dom/dist/matchers";
 

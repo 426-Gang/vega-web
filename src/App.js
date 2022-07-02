@@ -12,11 +12,10 @@ import NewsAndEvents from './components/pages/NewsAndEvents.js';
 import Resources from './components/pages/Resources.js';
 import AdminPanel from './components/pages/AdminPanel.js';
 import Leadership from './components/pages/Leadership.js';
-import Vault from './components/pages/Vault';
 import UserRegistration from './components/pages/UserRegistration.js';
 import {UserProvider} from './auth/UserProvider.js';
 import {UserContext} from './auth/UserProvider.js';
-import SecretsPanel from "./components/pages/UserSecrets";
+import SecretsPanel from "./components/pages/UserSecrets.js";
 
 import UserAccount from './components/pages/UserAccount.js';
 
@@ -37,9 +36,8 @@ function App() {
         	<Route path="/login" component={Login} />
           <Route path="/account" component={UserAccount} />
           <Route path="/resources" component={Resources} />
-          <Route path="/vault" component={Vault} />
           <Route path="/adminpanel" component={AdminPanel} />
-            <Route path="/secretspanel" component={SecretsPanel} />
+          <Route path="/secretspanel" component={SecretsPanel} />
         </Switch>
       </BrowserRouter>
     </UserProvider>
