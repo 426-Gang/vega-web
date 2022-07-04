@@ -36,16 +36,22 @@ const AdminPanel = (props) => {
 
 	const listOfUsersHTML = () => {
 		if(listOfUsers.length){
-			return listOfUsers.map((user) => <tr><td>{user.firstName}</td><td>{user.lastName}</td><td>{user.username}</td><td onClick={() => enableUser(user.username)}>
-				<a href="#">Enable User</a></td>
-				<td>
-					<Form.Select aria-label="Floating label select example" onChange={(evt) => changeRole(evt, user.username)}>
-					    <option>Open this select menu</option>
-					    <option value="ROLE_STAFF">STAFF</option>
-					    <option value="ROLE_USER">USER</option>
-  					</Form.Select>
-				</td></tr>) 
+			return listOfUsers.map((user) => userToHTML(user))
 		}
+	}
+
+	function userToHTML(user)
+	{
+		return (<tr><td>{user.firstName}</td><td>{user.lastName}</td><td>{user.username}</td><td onClick={() => enableUser(user.username)}>
+			<button className="btn btn-primary" onClick={(evt) => enableUser(evt, user.username)}>Enable User</button></td>
+			<td>
+				<Form.Select aria-label="Floating label select example" onChange={(evt) => changeRole(evt, user.username)}>
+					<option>Open this select menu</option>
+					<option value="ROLE_STAFF">STAFF</option>
+					<option value="ROLE_USER">USER</option>
+				</Form.Select>
+			</td></tr>)
+
 	}
 
 	return(
