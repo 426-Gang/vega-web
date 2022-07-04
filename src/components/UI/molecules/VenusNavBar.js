@@ -28,7 +28,8 @@ const VenusNavBar = (props) => {
 		<Navbar bg="light" variant="light">
     		<Container>
     			<Nav className="w-100 ">
-                <Nav.Link href="/platform">Platform</Nav.Link>
+                        <Nav.Link href="/">Home</Nav.Link>
+                        <Nav.Link href="/platform">Platform</Nav.Link>
         				<Nav.Link href="/news">News & Events</Nav.Link>
         				<Nav.Link href="/leadership">Leadership</Nav.Link>
         				{resources}
