@@ -31,7 +31,7 @@ const Register = (props) => {
 				<UserRegistrationPageLayout>
 					<Row>
 						<Col>
-							Thanks for registering, please go ahead and <a href='/login'>login here</a>.
+							Thanks for registering, you are in a deactivated state. Your admin will activate you.
 						</Col>
 					</Row>
 				</UserRegistrationPageLayout>
