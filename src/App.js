@@ -8,6 +8,7 @@ import SimplePageLayout from './components/templates/SimplePageLayout.js'
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Platform from './components/pages/Platform.js';
 import Login from './components/pages/Login.js';
+import Register from './components/pages/Register.js';
 import NewsAndEvents from './components/pages/NewsAndEvents.js';
 import Resources from './components/pages/Resources.js';
 import AdminPanel from './components/pages/AdminPanel.js';
@@ -33,6 +34,7 @@ function App() {
         	<Route path="/news" component={NewsAndEvents} />
         	<Route path="/platform" component={Platform} />
         	<Route path="/login" component={Login} />
+          <Route path="/register" component={Register} />
           <Route path="/account" component={UserAccount} />
           <Route path="/resources" component={Resources} />
           <Route path="/adminpanel" component={AdminPanel} />
