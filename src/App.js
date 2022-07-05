@@ -16,6 +16,7 @@ import Leadership from './components/pages/Leadership.js';
 import UserRegistration from './components/pages/UserRegistration.js';
 import {UserProvider} from './auth/UserProvider.js';
 import {UserContext} from './auth/UserProvider.js';
+import SecretsPanel from "./components/pages/UserSecrets.js";
 
 import UserAccount from './components/pages/UserAccount.js';
 
@@ -38,6 +39,7 @@ function App() {
           <Route path="/account" component={UserAccount} />
           <Route path="/resources" component={Resources} />
           <Route path="/adminpanel" component={AdminPanel} />
+          <Route path="/secretspanel" component={SecretsPanel} />
         </Switch>
       </BrowserRouter>
     </UserProvider>
