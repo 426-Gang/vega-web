@@ -8,6 +8,7 @@ const VenusNavBar = (props) => {
 	var logout;
   var resources;
   var adminpanel;
+  var secretspanel;
 
   if(user.username && user.jwt){
     console.log(user);
@@ -24,20 +25,26 @@ const VenusNavBar = (props) => {
     adminpanel = <Nav.Link href="/adminpanel">Admin</Nav.Link>
   }
 
+  if(user.role == "ROLE_USER"){
+      secretspanel = <Nav.Link href="/secretspanel">Secrets</Nav.Link>
+  }
   return (
 		<Navbar bg="light" variant="light">
     		<Container>
     			<Nav className="w-100 ">
-                <Nav.Link href="/platform">Platform</Nav.Link>
+                        <Nav.Link href="/">Home</Nav.Link>
+                        <Nav.Link href="/platform">Platform</Nav.Link>
         				<Nav.Link href="/news">News & Events</Nav.Link>
         				<Nav.Link href="/leadership">Leadership</Nav.Link>
         				{resources}
         				<Nav.Link href="#pricing">About us</Nav.Link>
         				<Nav.Link href="/contactus">Contact us</Nav.Link>
+                    {secretspanel}
               <Nav.Item className="float-right">
                 {logout}
               </Nav.Item>
                 {adminpanel}
+
     			</Nav>
     		</Container>
   		</Navbar>

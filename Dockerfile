@@ -9,6 +9,9 @@ WORKDIR /app
 ARG WEBSERVER_URL
 ENV REACT_APP_WEBSERVER_URL=${WEBSERVER_URL}
 
+RUN echo $WEBSERVER_URL
+RUN echo $REACT_APP_WEBSERVER_URL
+
 COPY ["package.json", "package-lock.json", "./"]
 
 RUN npm install --production
