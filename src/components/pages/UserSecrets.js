@@ -9,62 +9,53 @@ import {toContainHTML} from "@testing-library/jest-dom/dist/matchers";
 const SecretsPanel = (props) => {
     const {user} = useContext(UserContext);
     const [listOfUsers, setUsers] = useState([]);
-    const [testListOfSecrets, setSecrets,setListOfSecrets] = useState([]);
+    const [listOfSecrets,setlistOfSecrets] = useState([]);
     useEffect(() => {
         console.log("Inside useEffect")
         fetchuser(user.jwt)
             .then(resp => {
-                // Set initial value of secerets here  
                 setUsers(resp)
             });
-            mySecrets(user.username).then(resp => {
-                setSecrets(resp)
-                console.log(setSecrets)    
-            });
-
-
+        mySecrets(user.username).then(secrets => {
+            setlistOfSecrets(secrets)
+        });
     }, [user]);
 
-    const enableUser = (username) => {
-        console.log("Enable User called with",username)
-        enableAccount(username, user.jwt)
-            .then(resp =>
-                console.log("User enabled"))
+    const handleChange = (e) => {
+        newSecretData(e.target.innerHTML)
     }
-
-
-    const changeRole = (evt, secret) => {
-        secret.password = "test"
-    }
-
 
     const listOfUsersHTML = () => {
-        
-        if(testListOfSecrets.length){
-            return testListOfSecrets.map((secret) =>
-             <tr><td contenteditable="true">{secret.id}</td><td >{secret.datetime}</td><td contenteditable="true">{secret.data}</td>
-                <td><button className="btn btn-danger mx-1 my-1" onClick={() => deleteRow(secret.id)}>Delete</button></td></tr>)
-        }
-            
+        console.log(listOfSecrets)
+            if(listOfSecrets.length){
+                return listOfSecrets.map((secret) =>
+                <tr><td  width="25%">{secret.name}</td><td width="25%" >{secret.datetime.toString().split('T')[0]}</td>
+                <td width="25%" contenteditable="true" value={secretData} onInput={handleChange}>{secret.data}</td>
+                <td width="25%"><button className="btn btn-danger mx-1 my-1" onClick={() => deleteRow(secret)}>Delete</button>
+                <button type="button" className="btn btn-primary mx-1 my-1"onClick={() => updateSecrets(secret,secretData)}>Save</button></td></tr>
+                )
+            }
     }
 
-    const deleteRow = (secret) =>
-    {
-        // deleteSecret(secret)
-        let newListOfSecrets = []
-        for (let i = 0; i < testListOfSecrets.length; i++)
+    const updateSecrets = (secret,secretData) => {
+        updateSecret(secret.id,secret.username,secretData,secret.shared,secret.name)
+    }
+
+    const deleteRow = (secret) => {
+        deleteSecret(secret.id)
+        let newlistOfSecrets = []
+        for (let i = 0; i < listOfSecrets.length; i++)
         {
-            if(testListOfSecrets[i]['id'] == secret)
+            if(listOfSecrets[i]['id'] == secret.id)
             {
                 
             }else
             {
-                newListOfSecrets.push(testListOfSecrets[i]);
+                newlistOfSecrets.push(listOfSecrets[i]);
 
             }
-
         }
-        setSecrets(newListOfSecrets)
+        setlistOfSecrets(newlistOfSecrets)
 
     }
 
@@ -72,6 +63,7 @@ const SecretsPanel = (props) => {
     const [validated, setValidated] = useState(false);
     const [newName, setNewName] = useState("");
     const [newPassword, setNewPassword] = useState("");
+    const [secretData, newSecretData] = useState("");
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -99,10 +91,12 @@ const SecretsPanel = (props) => {
                 event.stopPropagation();
                 setShow(false)
                 let newDate = getCurrentDate("-")
-                newSecret(user.username,newPassword,false)
-                testListOfSecrets.push({name:newName,date:newDate,password:newPassword})
-                setSecrets(testListOfSecrets)
-
+                newSecret(user.username,newPassword,false,newName).then( resp => {
+                    mySecrets(user.username).then(resp1 => {
+                        setlistOfSecrets(resp1)
+                    });
+                });
+    
                 setNewName("")
                 setNewPassword("")
             }
@@ -114,10 +108,10 @@ const SecretsPanel = (props) => {
             <Table id="secretTable">
                 <thead>
                 <tr>
-                    <td>Id</td>
+                    <td>Name</td>
                     <td>Creation Date</td>
                     <td>Password</td>
-                    <td>Delete</td>
+                    <td>Delete/Save</td>
                 </tr>
                 </thead>
                 <tbody id="secretTableBody">
@@ -126,17 +120,16 @@ const SecretsPanel = (props) => {
             </Table>
             <div className="d-flex">
                 <button type="button" className="btn btn-success mx-1 my-1" onClick={handleShow} >Add</button>
-                <button type="button" className="btn btn-primary mx-1 my-1">Save</button>
             </div>
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Create a New Secret</Modal.Title>
                 </Modal.Header>
                 <Modal.Body><Form  noValidate validated={validated} onSubmit={handleSubmit}>
-                    {/* <Form.Group className="mb-3" controlId="formBasicName">
+                    <Form.Group className="mb-3" controlId="formBasicName">
                         <Form.Label>Name</Form.Label>
                         <Form.Control value={newName} onChange={(e) => setNewName(e.target.value)} required type="text" placeholder="Enter Name" />
-                    </Form.Group> */}
+                    </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formBasicPassword">
                         <Form.Label>Password</Form.Label>
