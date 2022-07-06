@@ -3,22 +3,20 @@ version: '3'
 services:
   backend:
     build:
-      context: ./server
+      context: ./vega-server
       dockerfile: ./Dockerfile
     image: "venus/quantum"
     ports:
       - "8000:8000"
     environment:
-      - BACKEND_URL=127.0.0.1:8080
-      - FRONTEND_URL=localhost:3000
+      - API_URL=${MY_IP}:8080
+      - FRONTEND_URL=${MY_IP}:3000
   frontend:
     build:
       context: ./
       dockerfile: ./Dockerfile
       args:
-        - WEBSERVER_URL=localhost:8000
+        - WEBSERVER_URL=${MY_IP}:8000
     image: "venus/theswitch"
     ports:
       - "3000:3000"
-    links:
-       - "backend:be"
